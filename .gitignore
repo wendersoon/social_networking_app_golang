@@ -23,3 +23,6 @@ go.work.sum
 
 #Enviroment 
 .env
+
+#Dados de teste
+dados.sql 
