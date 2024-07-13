@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"api/autenticacao"
+	"api/src/autenticacao"
 	"api/src/banco"
 	"api/src/modelos"
 	"api/src/repositorios"

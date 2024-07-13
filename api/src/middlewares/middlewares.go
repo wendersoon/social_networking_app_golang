@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"api/autenticacao"
+	"api/src/autenticacao"
 	"api/src/respostas"
 	"log"
 	"net/http"
