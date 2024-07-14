@@ -125,7 +125,6 @@ func (repositorio usuarios) Deletar(usuarioID uint64) error {
 	}
 
 	return nil
-
 }
 
 // BuscarPorEmail busca um usuário por email e retorna o seu id e senha com hash
@@ -244,4 +243,39 @@ func (repositorio usuarios) BuscarSeguindo(usuarioID uint64) ([]modelos.Usuario,
 		usuarios = append(usuarios, usuario)
 	}
 	return usuarios, nil
+}
+
+// BuscarSenha retorna a senha de um usuário pelo ID
+func (repositorio usuarios) BuscarSenha(usuarioID uint64) (string, error) {
+	linha, err := repositorio.db.Query("select senha from usuarios where id = ?", usuarioID)
+	if err != nil {
+		return "", err
+	}
+	defer linha.Close()
+
+	var usuario modelos.Usuario
+
+	if linha.Next() {
+		if err := linha.Scan(&usuario.Senha); err != nil {
+			return "", err
+		}
+	}
+
+	return usuario.Senha, nil
+}
+
+// AtualizarSenha altera a senha de um usuário
+func (repositorio usuarios) AtualizarSenha(usuarioID uint64, novaSenha string) error {
+
+	statement, err := repositorio.db.Prepare("update usuarios set senha = ? where id = ?")
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	if _, err := statement.Exec(novaSenha, usuarioID); err != nil {
+		return err
+	}
+
+	return nil
 }

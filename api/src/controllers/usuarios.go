@@ -6,6 +6,7 @@ import (
 	"api/src/modelos"
 	"api/src/repositorios"
 	"api/src/respostas"
+	"api/src/seguranca"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -335,4 +336,71 @@ func BuscarSeguindo(w http.ResponseWriter, r *http.Request) {
 
 	respostas.JSON(w, http.StatusOK, usuarios)
 
+}
+
+// AtualizarSenha permite alterar a senha de um usuário
+func AtualizarSenha(w http.ResponseWriter, r *http.Request) {
+
+	usuarioIdNoToken, err := autenticacao.ExtrairUsuarioID(r)
+	if err != nil {
+		respostas.Erro(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	parametros := mux.Vars(r)
+	usuarioId, err := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if usuarioId != usuarioIdNoToken {
+		respostas.Erro(w, http.StatusForbidden, errors.New("você não pode alterar a senha de outro usuário"))
+		return
+	}
+
+	corpoRequest, err := io.ReadAll(r.Body)
+	if err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	var senha modelos.Senha
+	if err := json.Unmarshal(corpoRequest, &senha); err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := banco.Conectar()
+	if err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repositorio := repositorios.NovoRepositorioDeUsuarios(db)
+
+	senhaSalvaNoBanco, err := repositorio.BuscarSenha(usuarioId)
+	if err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := seguranca.VerificarSenha(senhaSalvaNoBanco, senha.Atual); err != nil {
+		respostas.Erro(w, http.StatusUnauthorized, errors.New("a senha atual informada não condiz com a que está salva no banco"))
+		return
+	}
+
+	senhaComHash, err := seguranca.Hash(senha.Nova)
+	if err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := repositorio.AtualizarSenha(usuarioId, string(senhaComHash)); err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	respostas.JSON(w, http.StatusNoContent, nil)
 }
