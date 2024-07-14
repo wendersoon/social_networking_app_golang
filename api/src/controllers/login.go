@@ -45,8 +45,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusUnauthorized, err)
 		return
 	}
-
-	token, err := autenticacao.CriarToken(usuario.ID)
+	token, err := autenticacao.CriarToken(usuarioSalvoNoBanco.ID)
 	if err != nil {
 		respostas.Erro(w, http.StatusInternalServerError, err)
 		return

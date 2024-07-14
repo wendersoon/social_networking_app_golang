@@ -8,6 +8,7 @@ import (
 	"api/src/respostas"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -196,6 +197,45 @@ func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	if err = repositorio.Deletar(usuarioID); err != nil {
 		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	respostas.JSON(w, http.StatusNoContent, nil)
+}
+
+// SeguirUsuario permite que um usuário siga outro usuario
+func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
+
+	seguidorID, err := autenticacao.ExtrairUsuarioID(r)
+	if err != nil {
+		respostas.Erro(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	parametros := mux.Vars(r)
+	usuarioID, err := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if usuarioID == seguidorID {
+		respostas.Erro(w, http.StatusForbidden, errors.New("você não pode se seguir"))
+		return
+	}
+
+	fmt.Println(usuarioID, seguidorID)
+	db, err := banco.Conectar()
+	if err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repositorio := repositorios.NovoRepositorioDeUsuarios(db)
+
+	if err := repositorio.Seguir(usuarioID, seguidorID); err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
 		return
 	}
 
