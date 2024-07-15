@@ -122,3 +122,20 @@ func (repositorio publicacoes) Atualizar(publicacaoID uint64, publicacao modelos
 	return nil
 
 }
+
+// Deletar remove uma publicação existente no banco de dados
+func (repositorio publicacoes) Deletar(publicacaoID uint64) error {
+
+	statement, err := repositorio.db.Prepare("delete from publicacoes where id = ?")
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	if _, err := statement.Exec(publicacaoID); err != nil {
+		return err
+	}
+
+	return nil
+
+}
