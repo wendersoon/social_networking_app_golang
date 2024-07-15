@@ -1,9 +1,53 @@
 package controllers
 
-import "net/http"
+import (
+	"api/src/autenticacao"
+	"api/src/banco"
+	"api/src/modelos"
+	"api/src/repositorios"
+	"api/src/respostas"
+	"encoding/json"
+	"io"
+	"net/http"
+)
 
 // CriarPublicação adiciona uma nova publicação no banco de dados
 func CriarPublicacao(w http.ResponseWriter, r *http.Request) {
+
+	usuarioId, err := autenticacao.ExtrairUsuarioID(r)
+	if err != nil {
+		respostas.Erro(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	corpoRequest, err := io.ReadAll(r.Body)
+	if err != nil {
+		respostas.Erro(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	var publicacao modelos.Publicacao
+	if err := json.Unmarshal(corpoRequest, &publicacao); err != nil {
+		respostas.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+	publicacao.AutorID = usuarioId
+
+	db, err := banco.Conectar()
+	if err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repositorio := repositorios.NovoRepositorioDePublicacoes(db)
+
+	publicacao.ID, err = repositorio.Criar(publicacao)
+	if err != nil {
+		respostas.Erro(w, http.StatusInternalServerError, err)
+	}
+
+	respostas.JSON(w, http.StatusCreated, publicacao)
 
 }
 
