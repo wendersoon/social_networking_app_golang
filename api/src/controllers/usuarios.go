@@ -127,7 +127,7 @@ func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if usuarioID != usuarioIdNoToken {
-		respostas.Erro(w, http.StatusForbidden, errors.New("Não é possível atualizar um usuário que não é o seu."))
+		respostas.Erro(w, http.StatusForbidden, errors.New("não é possível atualizar um usuário que não é o seu"))
 		return
 	}
 
