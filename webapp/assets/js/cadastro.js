@@ -18,5 +18,12 @@ function criarUsuario(evento){
             nick: $('#nick').val(),
             senha: $('#senha').val() 
         }
+    }).done(function(retorno){
+        alert("Usuário cadastrado com sucesso!");
+    }).fail(function(erro){
+        console.log(erro);
+        alert("Erro ao cadastrar usuário!");
     });
+
+
 }
