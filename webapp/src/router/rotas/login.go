@@ -18,4 +18,10 @@ var rotasLogin = []Rota{
 		Funcao:             controllers.CarregarTelaDeLogin,
 		RequerAutenticacao: false,
 	},
+	{
+		Uri:                "/login",
+		Metodo:             http.MethodPost,
+		Funcao:             controllers.FazerLogin,
+		RequerAutenticacao: false,
+	},
 }
