@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 // Login é responsável por autenticar o usuário na api
@@ -51,5 +52,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(token))
+	usuarioId := strconv.FormatUint(usuarioSalvoNoBanco.ID, 10)
+
+	respostas.JSON(w, http.StatusOK, modelos.DadosAuth{ID: usuarioId, Token: token})
+
 }
