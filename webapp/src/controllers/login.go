@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"webapp/src/config"
+	"webapp/src/cookies"
 	"webapp/src/modelos"
 	"webapp/src/respostas"
 )
@@ -39,7 +40,13 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 	var dadosAutheticacao modelos.DadosAuth
 	if err := json.NewDecoder(response.Body).Decode(&dadosAutheticacao); err != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
+		return
 	}
 
-	w.Write([]byte("OK"))
+	if err := cookies.Salvar(w, dadosAutheticacao.ID, dadosAutheticacao.Token); err != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
+		return
+	}
+
+	respostas.JSON(w, http.StatusOK, nil)
 }
