@@ -2,6 +2,7 @@ package rotas
 
 import (
 	"net/http"
+	"webapp/src/middlewares"
 
 	"github.com/gorilla/mux"
 )
@@ -18,9 +19,21 @@ type Rota struct {
 func Configurar(router *mux.Router) *mux.Router {
 	rotas := rotasLogin
 	rotas = append(rotas, rotasUsuarios...)
-
+	rotas = append(rotas, rotaHome)
 	for _, rota := range rotas {
-		router.HandleFunc(rota.Uri, rota.Funcao).Methods(rota.Metodo)
+
+		if rota.RequerAutenticacao {
+			router.HandleFunc(rota.Uri,
+				middlewares.Logger(
+					middlewares.Autenticar(rota.Funcao)),
+			).Methods(rota.Metodo)
+
+		} else {
+			router.HandleFunc(rota.Uri,
+				middlewares.Logger(rota.Funcao),
+			).Methods(rota.Metodo)
+		}
+
 	}
 
 	// caminho dos arquivos estáticos
