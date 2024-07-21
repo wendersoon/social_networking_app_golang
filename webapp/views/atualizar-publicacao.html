@@ -1,0 +1,39 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebApp - Atualizar Publicação - {{ .Titulo }}</title>
+  <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    {{ template "cabecalho" }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h3>Editar Publicação</h3>
+                <div class="form-group">
+                    <label for="titulo">Titulo</label>
+                    <input type="text" class="form-control" id="titulo" placeholder="Insira o Título da Sua Publicação" value="{{ .Titulo }}">
+                </div>
+                <div class="form-group">
+                    <label for="conteudo">Conteúdo</label>
+                    <p>
+                    <textarea name="form-control" id="conteudo" name="conteudo" placeholder="Escreva o Conteúdo da Sua Publicação">{{ .Conteudo }}</textarea>
+                </p>
+                </div>
+                <button id="atualizar-publicacao" class="btn btn-info" data-publicacao-id="{{ .ID }}">Salvar Alterações!</button>
+            </div>
+        </div>
+    </div>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+
+    <script src="/assets/js/publicacoes.js"></script>
+</body>
+
+
+</html>
