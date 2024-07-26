@@ -87,6 +87,10 @@ I also used https://sweetalert2.github.io/. I didn't find the icon for here hehe
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Exemple Usage
+
+Video: https://youtu.be/egr5HD0OqJo
+
 ## Contact
 
 Wenderson Melo - [Linkedin](https://www.linkedin.com/in/wendersonomelo/) - ds.wendersonmelo@gmail.com
