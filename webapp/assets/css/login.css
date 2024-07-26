@@ -1,87 +1,102 @@
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-};
 
-a {
-    font-size: 16px;
-    color: #3b5998;
-    line-height: 1.4;
-    text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html,body{
+background-image: url('https://getwallpapers.com/wallpaper/full/7/6/6/194284.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+height: 100%;
+font-family: 'Numans', sans-serif;
 }
 
-a:hover {
-    text-decoration: none;
+.container{
+height: 100%;
+align-content: center;
 }
 
-input {
-    outline: none;
-    border: none;
-    color: #3b5998;
-    line-height: 1.2;
-    font-size: 18px;
-    display: block;
-    width: 100%;
-    background: transparent;
-    height: 62px;
-    padding: 0 20px 0 38px;
+.card{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: rgba(0,0,0,0.8) !important;
 }
 
-input::placeholder {
-    color: #8f8fa1;
+.card{
+    height: 400px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(0,0,0,0.8) !important;
+    }
+
+.social_icon span{
+font-size: 60px;
+margin-left: 10px;
+color: #FFC312;
 }
 
-.container-login {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
+.social_icon span:hover{
+color: white;
+cursor: pointer;
 }
 
-.container-login > div {
-    width: 390px;
-    background: #fff;
-    border-radius: 10px;
-    position: relative;
-    padding: 50px 0 90px 0;
+.card-header h3{
+color: white;
 }
 
-.app-form > span {
-    font-size: 30px;
-    color: #3b5998;
-    line-height: 1.2;
-    text-align: center;
-    width: 100%;
-    display: block;
-    padding-bottom: 30px;   
+.card-footer-cadastro{
+    background-color: rgba(0,0,0,0.8) !important;
 }
 
-.app-form > div {
-    width: 100%;
-    position: relative;
-    background-color: #e6e6e6;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    margin-bottom: 16px;
+
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
 }
 
-.btn-app {
-    font-size: 16px;
-    color: #fff;
-    line-height: 1.2;
-    padding: 0 20px;
-    width: 100%;
-    height: 62px;
-    background-color: #3b5998;
-    outline: none;
-    border: none
+.input-group-prepend span{
+width: 50px;
+background-color: #FFC312;
+color: black;
+border:0 !important;
 }
 
-.btn-app:hover{
-    cursor: pointer;
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+color: black;
+background-color: #FFC312;
+width: 100px;
+}
+
+.login_btn:hover{
+color: black;
+background-color: white;
+}
+
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
 }

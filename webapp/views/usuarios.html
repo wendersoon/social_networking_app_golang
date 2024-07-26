@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebApp</title>
+    <title>JEDI</title>
     <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/css/backgroud.css" rel="stylesheet">
 </head>
 
 <body>
     {{ template "cabecalho" }}
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="row mt-4">
-            <div class="col-12">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Resultados</h5>
                         {{ range . }}
                         <p class="card-text">
-                            {{ .Nome }} - <a href="/usuarios/{{ .ID }}" {{ .Nick }}></a>
+                            {{ .Nome }} - <a href="/usuarios/{{ .ID }}">{{ .Nick }}</a>
                         </p>
                         {{ else }}
 

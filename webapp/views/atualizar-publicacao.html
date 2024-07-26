@@ -1,30 +1,39 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebApp - Atualizar Publicação - {{ .Titulo }}</title>
-  <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEDI - Atualizar Publicação - {{ .Titulo }}</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/css/backgroud.css" rel="stylesheet">
 </head>
 
 <body>
     {{ template "cabecalho" }}
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="row mt-4">
-            <div class="col-12">
-                <h3>Editar Publicação</h3>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <h3 class="fw-semibold" style="color: #FFC312;">Editar Publicação</h3>
                 <div class="form-group">
-                    <label for="titulo">Titulo</label>
-                    <input type="text" class="form-control" id="titulo" placeholder="Insira o Título da Sua Publicação" value="{{ .Titulo }}">
+                    <label for="titulo" style="color: #FFC312;">Titulo</label>
+                    <input type="text" class="form-control" id="titulo" placeholder="Insira o Título da Sua Publicação"
+                        value="{{ .Titulo }}">
                 </div>
                 <div class="form-group">
-                    <label for="conteudo">Conteúdo</label>
+                    <label for="conteudo" style="color: #FFC312;">Conteúdo</label>
                     <p>
-                    <textarea name="form-control" id="conteudo" name="conteudo" placeholder="Escreva o Conteúdo da Sua Publicação">{{ .Conteudo }}</textarea>
-                </p>
+                        <textarea name="form-control" id="conteudo" name="conteudo"
+                            placeholder="Escreva o Conteúdo da Sua Publicação"
+                            style="width: 100%;">{{ .Conteudo }}</textarea>
+                    </p>
                 </div>
-                <button id="atualizar-publicacao" class="btn btn-info" data-publicacao-id="{{ .ID }}">Salvar Alterações!</button>
+                <button id="atualizar-publicacao" class="btn btn-info" data-publicacao-id="{{ .ID }}">Salvar
+                    Alterações!</button>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <img src="https://c.tenor.com/rivJNJMvoyAAAAAC/baby-yoda-tired.gif" alt="Baby Yoda Tired"
+                    class="img-fluid" style="border-radius: 10px;">
             </div>
         </div>
     </div>
@@ -34,6 +43,5 @@
 
     <script src="/assets/js/publicacoes.js"></script>
 </body>
-
 
 </html>

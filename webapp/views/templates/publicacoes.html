@@ -1,23 +1,29 @@
 {{ define "curtidas" }}
-<i class="fa-regular fa-heart curtir-publicacao"></i>
-<span>{{ .Curtidas }} </span>
+
+<button class="btn btn-primary fw-medium curtir-publicacao">
+  <i class="fa-regular fa-heart"></i>
+  <span>{{ .Curtidas }} </span>
+</button>
 {{ end }}
 
 
 {{ define "editar" }}
-<a href="/publicacoes/{{ .ID }}/atualizar" style="text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i></a>
+<button class="btn btn-success">
+<a href="/publicacoes/{{ .ID }}/atualizar" style="color: #ffffff;"><i class="fa-solid fa-pen-to-square"></i></a>
+</button>
 {{ end }}
 
 {{ define "deletar" }}
-<i class="fa-solid fa-trash text-danger deletar-publicacao" style="cursor: pointer;"></i>
-
+<button class="btn btn-danger">
+<i class="fa-solid fa-trash deletar-publicacao" style="cursor: pointer;"></i>
+</button>
 {{ end }}
 
 
 {{ define "cabecalho-publicacao" }}
 <h1 class="display-4">{{ .Titulo }}</h1>
 <p class="lead">{{ .Conteudo }}</p>
-<a href="#">{{ .AutorNick }}</a>
+<a href="/usuarios/{{ .AutorID }}">{{ .AutorNick }}</a>
 <hr class="my-4">
 {{ end }}
 

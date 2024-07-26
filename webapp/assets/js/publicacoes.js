@@ -31,7 +31,7 @@ function criarPublicacao(evento){
 function curtirPublicacao(evento) {
     evento.preventDefault();
     
-    const elementoClicado = $(evento.target);
+    const elementoClicado = $(evento.currentTarget);
     const publicacaoId = elementoClicado.closest('div').data('publicacao-id');
 
     elementoClicado.prop('disabled', true);
@@ -40,7 +40,7 @@ function curtirPublicacao(evento) {
         url: `/publicacoes/${publicacaoId}/curtir`,
         method: "POST"
     }).done(function(){
-        const contadorDeCurtidas = elementoClicado.next('span');
+        const contadorDeCurtidas = elementoClicado.find('span');
         const quantidadeDeCurtidas = parseInt(contadorDeCurtidas.text());
 
         contadorDeCurtidas.text(quantidadeDeCurtidas + 1);
@@ -63,7 +63,7 @@ function curtirPublicacao(evento) {
 function descurtirPublicacao(evento){
     evento.preventDefault();
     
-    const elementoClicado = $(evento.target);
+    const elementoClicado = $(evento.currentTarget);
     const publicacaoId = elementoClicado.closest('div').data('publicacao-id');
 
     elementoClicado.prop('disabled', true);
@@ -72,9 +72,8 @@ function descurtirPublicacao(evento){
         url: `/publicacoes/${publicacaoId}/descurtir`,
         method: "POST"
     }).done(function(){
-        const contadorDeCurtidas = elementoClicado.next('span');
+        const contadorDeCurtidas = elementoClicado.find('span');
         const quantidadeDeCurtidas = parseInt(contadorDeCurtidas.text());
-
         contadorDeCurtidas.text(quantidadeDeCurtidas - 1);
         elementoClicado.removeClass('descurtir-publicacao');
         elementoClicado.removeClass('text-danger');

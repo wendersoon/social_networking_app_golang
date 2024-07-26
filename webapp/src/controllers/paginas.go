@@ -120,6 +120,73 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroAPI{Erro: err.Error()})
 		return
 	}
-	fmt.Println(usuarios)
+
 	utils.ExecutarTemplate(w, "usuarios.html", usuarios)
+}
+
+// CarregarPerfilDoUsuario redenriza a página de perfil do usuário
+func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+	usuarioID, err := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if err != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: err.Error()})
+		return
+	}
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	if usuarioID == usuarioLogadoID {
+		http.Redirect(w, r, "/perfil", http.StatusFound)
+		return
+	}
+
+	usuario, err := modelos.BuscarUsuarioCompleto(usuarioID, r)
+	if err != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
+	}
+
+	utils.ExecutarTemplate(w, "usuario.html", struct {
+		Usuario         modelos.Usuario
+		UsuarioLogadoID uint64
+	}{
+		Usuario:         usuario,
+		UsuarioLogadoID: usuarioLogadoID,
+	})
+}
+
+// CarregarPerfilDoUsuarioLogado renderiza a página do usuário da requisição
+func CarregarPerfilDoUsuarioLogado(w http.ResponseWriter, r *http.Request) {
+
+	cookie, _ := cookies.Ler(r)
+	usuarioID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	usuario, err := modelos.BuscarUsuarioCompleto(usuarioID, r)
+	if err != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: err.Error()})
+	}
+
+	utils.ExecutarTemplate(w, "perfil.html", usuario)
+
+}
+
+// CarregarPaginaDeEdicaoDeUsuario redenriza a página de edição do usuário
+func CarregarPaginaDeEdicaoDeUsuario(w http.ResponseWriter, r *http.Request) {
+
+	cookie, _ := cookies.Ler(r)
+	usuarioID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	canal := make(chan modelos.Usuario)
+	go modelos.BuscarDadosDoUsuario(canal, usuarioID, r)
+	usuario := <-canal
+
+	if usuarioID == 0 {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: "Erro ao buscar o usuário"})
+	}
+
+	utils.ExecutarTemplate(w, "editar-usuario.html", usuario)
+}
+
+// CarregarPaginaDeEdicaoDeSenha redenriza a página de atualização de senha
+func CarregarPaginaDeEdicaoDeSenha(w http.ResponseWriter, r *http.Request) {
+	utils.ExecutarTemplate(w, "atualizar-senha.html", nil)
 }
